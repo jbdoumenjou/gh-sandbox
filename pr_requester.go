@@ -95,10 +95,19 @@ func (p *PRRequester) GetPRStats(ctx context.Context, count int) []PR {
 	return prDataSet
 }
 
-// LogMD displays a mardown table of the prs stats list on the standard output.
-func LogMD(prs []PR) {
+// writeMDFile displays a markdown table of the prs stats list on the standard output.
+func writeMDFile(prs []PR, fileName string) {
+	// Get the current timestamp for file name
+
+	// Create the file
+	file, err := os.Create(fileName + ".md")
+	if err != nil {
+		log.Fatalf("Error creating file: %v", err)
+	}
+	defer file.Close()
+
 	// Create a logger that writes to the file
-	logger := log.New(os.Stdout, "", 0)
+	logger := log.New(file, "", 0)
 
 	logger.Println(
 		"| PR Number | Title | Created At | First Review At | Time Waiting First Review |" +
